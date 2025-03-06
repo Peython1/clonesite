@@ -16,15 +16,26 @@ const Index = () => {
   const startCloning = async (options: CloneOptions) => {
     try {
       await cloner.startClone(options);
-      toast.success('Clone completed successfully!');
+      toast({
+        title: "Success",
+        description: "Clone completed successfully!",
+        variant: "default",
+      });
     } catch (error) {
-      toast.error(`Clone failed: ${error instanceof Error ? error.message : String(error)}`);
+      toast({
+        title: "Error",
+        description: `Clone failed: ${error instanceof Error ? error.message : String(error)}`,
+        variant: "destructive",
+      });
     }
   };
   
   const cancelCloning = () => {
     cloner.cancelClone();
-    toast.info('Clone operation cancelled');
+    toast({
+      title: "Info",
+      description: "Clone operation cancelled",
+    });
   };
   
   // Update progress state periodically
