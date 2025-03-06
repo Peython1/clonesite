@@ -1,0 +1,7 @@
+
+{
+  "buildOptions": {
+    "target": "node18-win-x64",
+    "output": "website_cloner.exe"
+  }
+}

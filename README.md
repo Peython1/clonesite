@@ -60,6 +60,24 @@ This project is built with .
 - shadcn-ui
 - Tailwind CSS
 
+## Compilation:
+
+1. Install dependencies via CLI:
+   ```bash
+   lov-add-dependency puppeteer pkg eslint
+   ```
+
+2. Execute the build script:
+   ```bash
+   chmod +x ./scripts/build-exe.sh
+   ./scripts/build-exe.sh
+   ```
+
+Alternative method if lov-add-dependency fails:
+   ```bash
+   npm install --save-dev puppeteer pkg eslint
+   ```
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/34eab173-6c5e-4259-9cb2-a0ca19d5cf0c) and click on Share -> Publish.
