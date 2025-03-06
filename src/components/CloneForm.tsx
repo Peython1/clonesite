@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { CloneOptions } from '@/utils/interfaces';
 import { 
   Link2, FolderOutput, Settings, 
-  Layers, Workflow, ExternalLink 
+  Layers, Workflow, ExternalLink, Info 
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';

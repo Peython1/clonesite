@@ -7,7 +7,7 @@ import Header from '@/components/Header';
 import CloneForm from '@/components/CloneForm';
 import ProcessIndicator from '@/components/ProcessIndicator';
 import LogDisplay from '@/components/LogDisplay';
-import { toast } from '@/components/ui/sonner';
+import { toast } from '@/hooks/use-toast';
 
 const Index = () => {
   const [cloner] = useState(() => new WebsiteCloner());
