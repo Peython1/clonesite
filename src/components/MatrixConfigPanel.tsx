@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { MatrixConfig } from '@/utils/interfaces';
 import { 
@@ -11,17 +12,10 @@ import {
 import {
   Switch
 } from '@/components/ui/switch';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Settings2Icon } from 'lucide-react';
+import ColorSelector from './matrix/ColorSelector';
 
 interface MatrixConfigPanelProps {
   config: MatrixConfig;
@@ -37,17 +31,6 @@ const MatrixConfigPanel: React.FC<MatrixConfigPanelProps> = ({ config, onChange 
       [key]: value
     });
   };
-  
-  // Predefined matrix colors
-  const predefinedColors = [
-    { value: '#00FF00', label: 'Matrix Green' },
-    { value: '#0088FF', label: 'Cyber Blue' },
-    { value: '#FF00FF', label: 'Neon Purple' },
-    { value: '#FFFF00', label: 'Bright Yellow' },
-    { value: '#FF0000', label: 'Red Alert' },
-    { value: '#00FFFF', label: 'Digital Cyan' },
-    { value: '#FFFFFF', label: 'Ghost White' },
-  ];
   
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -119,40 +102,10 @@ const MatrixConfigPanel: React.FC<MatrixConfigPanelProps> = ({ config, onChange 
             />
           </div>
           
-          <div className="space-y-2">
-            <Label htmlFor="color">Color</Label>
-            <div className="flex space-x-2">
-              <Select
-                value={predefinedColors.find(c => c.value === config.color)?.value || 'custom'}
-                onValueChange={(value) => handleChange('color', value)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select color" />
-                </SelectTrigger>
-                <SelectContent>
-                  {predefinedColors.map((color) => (
-                    <SelectItem key={color.value} value={color.value}>
-                      <div className="flex items-center">
-                        <div 
-                          className="w-4 h-4 mr-2 rounded-full" 
-                          style={{ backgroundColor: color.value }}
-                        />
-                        {color.label}
-                      </div>
-                    </SelectItem>
-                  ))}
-                  <SelectItem value="custom">Custom Color</SelectItem>
-                </SelectContent>
-              </Select>
-              
-              <Input
-                type="color"
-                value={config.color}
-                onChange={(e) => handleChange('color', e.target.value)}
-                className="w-12 p-1 h-10"
-              />
-            </div>
-          </div>
+          <ColorSelector 
+            value={config.color}
+            onChange={(value) => handleChange('color', value)}
+          />
           
           <div className="space-y-2">
             <div className="flex justify-between">

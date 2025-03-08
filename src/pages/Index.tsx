@@ -7,8 +7,7 @@ import CloneForm from '@/components/CloneForm';
 import ProcessIndicator from '@/components/ProcessIndicator';
 import LogDisplay from '@/components/LogDisplay';
 import { toast } from '@/hooks/use-toast';
-import MatrixRain from '@/components/MatrixRain';
-import MatrixConfigPanel from '@/components/MatrixConfigPanel';
+import MatrixController from '@/components/matrix/MatrixController';
 import ResourceSelector from '@/components/ResourceSelector';
 import ConfigProfiles from '@/components/ConfigProfiles';
 import BandwidthSaver from '@/components/BandwidthSaver';
@@ -102,42 +101,9 @@ const Index = () => {
     return () => clearInterval(interval);
   }, [cloner]);
   
-  useEffect(() => {
-    if (window) {
-      (window as any).configureMatrixEffect = (config: Partial<MatrixConfig>) => {
-        setMatrixConfig(prev => ({
-          ...prev,
-          ...config
-        }));
-      };
-      
-      (window as any).startMatrixEffect = () => {
-        setMatrixConfig(prev => ({
-          ...prev,
-          enabled: true
-        }));
-      };
-      
-      (window as any).stopMatrixEffect = () => {
-        setMatrixConfig(prev => ({
-          ...prev,
-          enabled: false
-        }));
-      };
-    }
-    
-    const epilepsySafe = localStorage.getItem('epilepsySafe') === 'true';
-    if (epilepsySafe) {
-      setMatrixConfig(prev => ({
-        ...prev,
-        enabled: false
-      }));
-    }
-  }, []);
-  
   return (
     <div className="min-h-screen bg-background relative">
-      <MatrixRain config={matrixConfig} />
+      <MatrixController config={matrixConfig} onChange={setMatrixConfig} />
       
       <div className="relative">
         <motion.div
@@ -151,13 +117,6 @@ const Index = () => {
           animate={{ opacity: 0.5 }}
           transition={{ delay: 0.8, duration: 1 }}
           className="absolute top-40 right-[15%] w-[25rem] h-[25rem] rounded-full bg-purple-300/20 blur-3xl -z-10"
-        />
-      </div>
-      
-      <div className="absolute top-3 right-3 z-10">
-        <MatrixConfigPanel 
-          config={matrixConfig}
-          onChange={setMatrixConfig}
         />
       </div>
       
