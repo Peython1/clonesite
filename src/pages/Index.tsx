@@ -2,20 +2,85 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { WebsiteCloner } from '@/utils/cloner';
-import { CloneOptions, CloneProgress } from '@/utils/interfaces';
+import { CloneOptions, CloneProgress, MatrixConfig } from '@/utils/interfaces';
 import Header from '@/components/Header';
 import CloneForm from '@/components/CloneForm';
 import ProcessIndicator from '@/components/ProcessIndicator';
 import LogDisplay from '@/components/LogDisplay';
 import { toast } from '@/hooks/use-toast';
+import MatrixRain from '@/components/MatrixRain';
+import MatrixConfigPanel from '@/components/MatrixConfigPanel';
+import ResourceSelector from '@/components/ResourceSelector';
+import ConfigProfiles from '@/components/ConfigProfiles';
+import BandwidthSaver from '@/components/BandwidthSaver';
 
 const Index = () => {
   const [cloner] = useState(() => new WebsiteCloner());
   const [progress, setProgress] = useState<CloneProgress>(cloner.getProgress());
+  const [matrixConfig, setMatrixConfig] = useState<MatrixConfig>({
+    enabled: true,
+    opacity: 0.2,
+    speed: 1.5,
+    color: '#00FF00',
+    density: 0.1,
+    fps: 30
+  });
   
-  const startCloning = async (options: CloneOptions) => {
+  // Clone options state
+  const [cloneOptions, setCloneOptions] = useState<CloneOptions>({
+    url: '',
+    outputDir: '',
+    maxDepth: 2,
+    sameHostOnly: true,
+    resourceTypes: {
+      html: true,
+      css: true,
+      js: true,
+      images: true,
+      fonts: true,
+      videos: true,
+      documents: true,
+      other: true
+    }
+  });
+  
+  // Bandwidth saver state
+  const [bandwidthSaverEnabled, setBandwidthSaverEnabled] = useState(false);
+  const [maxFileSize, setMaxFileSize] = useState(5); // in MB
+  const [compressResources, setCompressResources] = useState(true);
+  
+  // Update resource types
+  const handleResourceTypesChange = (resourceTypes: CloneOptions['resourceTypes']) => {
+    setCloneOptions(prev => ({
+      ...prev,
+      resourceTypes
+    }));
+  };
+  
+  // Load a saved profile
+  const handleLoadProfile = (options: CloneOptions) => {
+    setCloneOptions(options);
+  };
+  
+  const startCloning = async (formOptions: Partial<CloneOptions>) => {
     try {
-      await cloner.startClone(options);
+      // Merge form options with current options
+      const mergedOptions: CloneOptions = {
+        ...cloneOptions,
+        ...formOptions,
+        // Apply bandwidth saving options if enabled
+        ...(bandwidthSaverEnabled && {
+          maxFileSize: maxFileSize * 1024 * 1024, // Convert MB to bytes
+          compressResources
+        })
+      };
+      
+      // Update the full options state
+      setCloneOptions(mergedOptions);
+      
+      // Start the clone operation
+      await cloner.startClone(mergedOptions);
+      
       toast({
         title: "Success",
         description: "Clone completed successfully!",
@@ -47,8 +112,54 @@ const Index = () => {
     return () => clearInterval(interval);
   }, [cloner]);
   
+  // Expose matrix controls globally
+  useEffect(() => {
+    // Add configuration API
+    if (window) {
+      (window as any).configureMatrixEffect = (config: Partial<MatrixConfig>) => {
+        setMatrixConfig(prev => ({
+          ...prev,
+          ...config
+        }));
+      };
+      
+      // Start/stop methods
+      (window as any).startMatrixEffect = () => {
+        setMatrixConfig(prev => ({
+          ...prev,
+          enabled: true
+        }));
+      };
+      
+      (window as any).stopMatrixEffect = () => {
+        setMatrixConfig(prev => ({
+          ...prev,
+          enabled: false
+        }));
+      };
+    }
+    
+    // Check for epilepsy setting in localStorage
+    const epilepsySafe = localStorage.getItem('epilepsySafe') === 'true';
+    if (epilepsySafe) {
+      setMatrixConfig(prev => ({
+        ...prev,
+        enabled: false
+      }));
+    }
+  }, []);
+  
   return (
     <div className="min-h-screen bg-background">
+      {/* Matrix Rain Effect */}
+      <MatrixRain 
+        enabled={matrixConfig.enabled}
+        opacity={matrixConfig.opacity}
+        speed={matrixConfig.speed}
+        color={matrixConfig.color}
+        density={matrixConfig.density}
+      />
+      
       <div className="relative">
         {/* Background blur spheres (decorative) */}
         <motion.div
@@ -62,6 +173,13 @@ const Index = () => {
           animate={{ opacity: 0.5 }}
           transition={{ delay: 0.8, duration: 1 }}
           className="absolute top-40 right-[15%] w-[25rem] h-[25rem] rounded-full bg-purple-300/20 blur-3xl -z-10"
+        />
+      </div>
+      
+      <div className="absolute top-3 right-3 z-10">
+        <MatrixConfigPanel 
+          config={matrixConfig}
+          onChange={setMatrixConfig}
         />
       </div>
       
@@ -92,6 +210,43 @@ const Index = () => {
             and media assets to create a local archive for educational purposes.
           </p>
         </motion.div>
+        
+        <div className="bg-card rounded-lg shadow-sm border p-4 mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-medium">Advanced Options</h2>
+            <ConfigProfiles 
+              currentConfig={cloneOptions}
+              onLoadProfile={handleLoadProfile}
+            />
+          </div>
+          
+          <div className="space-y-4">
+            <ResourceSelector 
+              value={cloneOptions.resourceTypes || {
+                html: true,
+                css: true,
+                js: true,
+                images: true,
+                fonts: true,
+                videos: true,
+                documents: true,
+                other: true
+              }}
+              onChange={handleResourceTypesChange}
+            />
+            
+            <div className="h-px bg-border my-4" />
+            
+            <BandwidthSaver 
+              enabled={bandwidthSaverEnabled}
+              onEnabledChange={setBandwidthSaverEnabled}
+              maxFileSize={maxFileSize}
+              onMaxFileSizeChange={setMaxFileSize}
+              compressResources={compressResources}
+              onCompressResourcesChange={setCompressResources}
+            />
+          </div>
+        </div>
         
         <CloneForm 
           onStartClone={startCloning} 

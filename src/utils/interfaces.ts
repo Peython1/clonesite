@@ -1,30 +1,37 @@
 
 export interface CloneOptions {
   url: string;
-  depth: number;
-  includeExternal: boolean;
-  outputPath: string;
-  parallel: number;
-}
-
-export interface CloneStats {
-  totalFiles: number;
-  downloadedFiles: number;
-  failedFiles: number;
-  totalSize: number;
-  elapsedTime: number;
-}
-
-export interface LogEntry {
-  timestamp: Date;
-  message: string;
-  type: 'info' | 'success' | 'warning' | 'error';
-  url?: string;
+  outputDir: string;
+  maxDepth: number;
+  sameHostOnly: boolean;
+  // Novas opções para download seletivo
+  resourceTypes?: {
+    html: boolean;
+    css: boolean;
+    js: boolean;
+    images: boolean;
+    fonts: boolean;
+    videos: boolean;
+    documents: boolean;
+    other: boolean;
+  };
 }
 
 export interface CloneProgress {
-  status: 'idle' | 'running' | 'completed' | 'error';
-  stats: CloneStats;
-  logs: LogEntry[];
+  status: 'idle' | 'running' | 'completed' | 'failed' | 'cancelled';
   currentUrl?: string;
+  processedUrls: number;
+  totalUrls: number;
+  downloadedBytes: number;
+  elapsedTimeMs: number;
+  logs: string[];
+}
+
+export interface MatrixConfig {
+  enabled: boolean;
+  opacity: number;
+  speed: number;
+  color: string;
+  density: number;
+  fps?: number;
 }
