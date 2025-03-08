@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { WebsiteCloner } from '@/utils/cloner';
@@ -26,7 +25,6 @@ const Index = () => {
     fps: 30
   });
   
-  // Clone options state
   const [cloneOptions, setCloneOptions] = useState<CloneOptions>({
     url: '',
     outputDir: '',
@@ -44,12 +42,10 @@ const Index = () => {
     }
   });
   
-  // Bandwidth saver state
   const [bandwidthSaverEnabled, setBandwidthSaverEnabled] = useState(false);
   const [maxFileSize, setMaxFileSize] = useState(5); // in MB
   const [compressResources, setCompressResources] = useState(true);
   
-  // Update resource types
   const handleResourceTypesChange = (resourceTypes: CloneOptions['resourceTypes']) => {
     setCloneOptions(prev => ({
       ...prev,
@@ -57,28 +53,23 @@ const Index = () => {
     }));
   };
   
-  // Load a saved profile
   const handleLoadProfile = (options: CloneOptions) => {
     setCloneOptions(options);
   };
   
   const startCloning = async (formOptions: Partial<CloneOptions>) => {
     try {
-      // Merge form options with current options
       const mergedOptions: CloneOptions = {
         ...cloneOptions,
         ...formOptions,
-        // Apply bandwidth saving options if enabled
         ...(bandwidthSaverEnabled && {
-          maxFileSize: maxFileSize * 1024 * 1024, // Convert MB to bytes
+          maxFileSize: maxFileSize * 1024 * 1024,
           compressResources
         })
       };
       
-      // Update the full options state
       setCloneOptions(mergedOptions);
       
-      // Start the clone operation
       await cloner.startClone(mergedOptions);
       
       toast({
@@ -103,7 +94,6 @@ const Index = () => {
     });
   };
   
-  // Update progress state periodically
   useEffect(() => {
     const interval = setInterval(() => {
       setProgress(cloner.getProgress());
@@ -112,9 +102,7 @@ const Index = () => {
     return () => clearInterval(interval);
   }, [cloner]);
   
-  // Expose matrix controls globally
   useEffect(() => {
-    // Add configuration API
     if (window) {
       (window as any).configureMatrixEffect = (config: Partial<MatrixConfig>) => {
         setMatrixConfig(prev => ({
@@ -123,7 +111,6 @@ const Index = () => {
         }));
       };
       
-      // Start/stop methods
       (window as any).startMatrixEffect = () => {
         setMatrixConfig(prev => ({
           ...prev,
@@ -139,7 +126,6 @@ const Index = () => {
       };
     }
     
-    // Check for epilepsy setting in localStorage
     const epilepsySafe = localStorage.getItem('epilepsySafe') === 'true';
     if (epilepsySafe) {
       setMatrixConfig(prev => ({
@@ -150,18 +136,10 @@ const Index = () => {
   }, []);
   
   return (
-    <div className="min-h-screen bg-background">
-      {/* Matrix Rain Effect */}
-      <MatrixRain 
-        enabled={matrixConfig.enabled}
-        opacity={matrixConfig.opacity}
-        speed={matrixConfig.speed}
-        color={matrixConfig.color}
-        density={matrixConfig.density}
-      />
+    <div className="min-h-screen bg-background relative">
+      <MatrixRain config={matrixConfig} />
       
       <div className="relative">
-        {/* Background blur spheres (decorative) */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.6 }}

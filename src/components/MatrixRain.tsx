@@ -1,25 +1,15 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import { useEffectOnce } from '@/hooks/use-effect-once';
+import { MatrixConfig } from '@/utils/interfaces';
 
 interface MatrixRainProps {
-  opacity?: number;
-  speed?: number;
-  color?: string;
-  density?: number;
-  enabled?: boolean;
+  config: MatrixConfig;
 }
 
-const MatrixRain: React.FC<MatrixRainProps> = ({
-  opacity = 0.2,
-  speed = 1.5,
-  color = '#00FF00',
-  density = 0.1,
-  enabled = true,
-}) => {
+const MatrixRain: React.FC<MatrixRainProps> = ({ config }) => {
+  const { opacity, speed, color, density, enabled, fps = 30 } = config;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isActive, setIsActive] = useState(enabled);
-  const [fps, setFps] = useState(30);
   const requestRef = useRef<number>();
   const previousTimeRef = useRef<number>();
   const dropsRef = useRef<{
@@ -149,7 +139,6 @@ const MatrixRain: React.FC<MatrixRainProps> = ({
     requestRef.current = requestAnimationFrame(draw);
   };
 
-  // Handle window resize
   const handleResize = () => {
     if (!canvasRef.current) return;
     
@@ -161,12 +150,10 @@ const MatrixRain: React.FC<MatrixRainProps> = ({
     initialize();
   };
 
-  // Public methods exposed through refs
   const start = () => setIsActive(true);
   const stop = () => setIsActive(false);
   const setFpsRate = (newFps: number) => setFps(Math.max(1, Math.min(60, newFps)));
 
-  // Effect for animation loop
   useEffect(() => {
     if (isActive) {
       requestRef.current = requestAnimationFrame(draw);
@@ -176,9 +163,12 @@ const MatrixRain: React.FC<MatrixRainProps> = ({
         }
       };
     }
-  }, [isActive]);
+  }, [isActive, fps, color, speed, density]);
 
-  // Initialize on mount
+  useEffect(() => {
+    setIsActive(enabled);
+  }, [enabled]);
+
   useEffectOnce(() => {
     initialize();
     window.addEventListener('resize', handleResize);

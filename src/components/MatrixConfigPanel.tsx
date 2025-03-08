@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MatrixConfig } from '@/utils/interfaces';
 import { 
@@ -53,7 +52,12 @@ const MatrixConfigPanel: React.FC<MatrixConfigPanelProps> = ({ config, onChange 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="h-8 w-8"
+          title="Matrix Effect Settings"
+        >
           <Settings2Icon className="h-4 w-4" />
         </Button>
       </PopoverTrigger>
