@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/collapsible';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { FileIcon, ImageIcon, FileTextIcon, CodeIcon, FileTypeIcon, VideoIcon, FontIcon, MoreHorizontalIcon } from 'lucide-react';
+import { FileIcon, ImageIcon, FileTextIcon, CodeIcon, FileTypeIcon, VideoIcon, Type, MoreHorizontalIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface ResourceSelectorProps {
@@ -143,7 +143,7 @@ const ResourceSelector = ({ value, onChange }: ResourceSelectorProps) => {
               onCheckedChange={(checked) => updateResource('fonts')(!!checked)}
             />
             <Label htmlFor="fonts" className="flex items-center cursor-pointer">
-              <FontIcon className="h-4 w-4 mr-2 text-indigo-500" />
+              <Type className="h-4 w-4 mr-2 text-indigo-500" />
               Fonts (WOFF, TTF, etc.)
             </Label>
           </div>

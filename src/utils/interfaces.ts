@@ -4,7 +4,14 @@ export interface CloneOptions {
   outputDir: string;
   maxDepth: number;
   sameHostOnly: boolean;
-  // Novas opções para download seletivo
+  // Additional properties needed by the application
+  outputPath?: string;
+  depth?: number;
+  includeExternal?: boolean;
+  parallel?: number;
+  maxFileSize?: number;
+  compressResources?: boolean;
+  // Resource types for selective downloading
   resourceTypes?: {
     html: boolean;
     css: boolean;
@@ -24,7 +31,22 @@ export interface CloneProgress {
   totalUrls: number;
   downloadedBytes: number;
   elapsedTimeMs: number;
-  logs: string[];
+  logs: LogEntry[];
+  // Stats property needed by the components
+  stats?: {
+    totalFiles: number;
+    downloadedFiles: number;
+    failedFiles: number;
+    totalSize: number;
+    elapsedTime: number;
+  };
+}
+
+export interface LogEntry {
+  timestamp: Date;
+  message: string;
+  type: 'info' | 'success' | 'warning' | 'error';
+  url?: string;
 }
 
 export interface MatrixConfig {

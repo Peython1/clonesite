@@ -1,4 +1,3 @@
-
 import { CloneOptions, CloneProgress, LogEntry } from './interfaces';
 
 // This is a frontend simulation - in a real app, this would connect to a backend service
@@ -10,14 +9,18 @@ export class WebsiteCloner {
   constructor() {
     this.progress = {
       status: 'idle',
+      processedUrls: 0,
+      totalUrls: 0,
+      downloadedBytes: 0,
+      elapsedTimeMs: 0,
+      logs: [],
       stats: {
         totalFiles: 0,
         downloadedFiles: 0,
         failedFiles: 0,
         totalSize: 0,
         elapsedTime: 0
-      },
-      logs: []
+      }
     };
   }
 
@@ -34,22 +37,26 @@ export class WebsiteCloner {
     this.abortController = new AbortController();
     this.progress = {
       status: 'running',
+      processedUrls: 0,
+      totalUrls: 0,
+      downloadedBytes: 0,
+      elapsedTimeMs: 0,
+      logs: [],
+      currentUrl: options.url,
       stats: {
         totalFiles: 0,
         downloadedFiles: 0,
         failedFiles: 0,
         totalSize: 0,
         elapsedTime: 0
-      },
-      logs: [],
-      currentUrl: options.url
+      }
     };
 
     this.addLog('info', `Starting clone of ${options.url}`);
-    this.addLog('info', `Output path: ${options.outputPath}`);
-    this.addLog('info', `Recursion depth: ${options.depth === 0 ? 'unlimited' : options.depth}`);
-    this.addLog('info', `Include external resources: ${options.includeExternal ? 'yes' : 'no'}`);
-    this.addLog('info', `Parallel downloads: ${options.parallel}`);
+    this.addLog('info', `Output path: ${options.outputPath || options.outputDir}`);
+    this.addLog('info', `Recursion depth: ${options.depth !== undefined ? (options.depth === 0 ? 'unlimited' : options.depth) : (options.maxDepth === 0 ? 'unlimited' : options.maxDepth)}`);
+    this.addLog('info', `Include external resources: ${options.includeExternal !== undefined ? (options.includeExternal ? 'yes' : 'no') : (!options.sameHostOnly ? 'yes' : 'no')}`);
+    this.addLog('info', `Parallel downloads: ${options.parallel || 5}`);
 
     try {
       // In a real implementation, this would be the actual cloning logic
@@ -60,10 +67,12 @@ export class WebsiteCloner {
         this.addLog('warning', 'Clone operation was cancelled');
       } else {
         this.progress.status = 'completed';
-        this.addLog('success', `Clone completed successfully in ${this.progress.stats.elapsedTime.toFixed(2)}s`);
+        if (this.progress.stats) {
+          this.addLog('success', `Clone completed successfully in ${this.progress.stats.elapsedTime.toFixed(2)}s`);
+        }
       }
     } catch (error) {
-      this.progress.status = 'error';
+      this.progress.status = 'failed';
       this.addLog('error', `Clone failed: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
@@ -89,9 +98,8 @@ export class WebsiteCloner {
     console.log(`[${type.toUpperCase()}] ${message}${url ? ` (${url})` : ''}`);
   }
 
-  // This is a simulation for the frontend - in a real app this would be actual cloning logic
   private async simulateCloning(): Promise<void> {
-    if (!this.options) return;
+    if (!this.options || !this.progress.stats) return;
 
     const startTime = Date.now();
     const totalSimulatedFiles = Math.floor(Math.random() * 100) + 50; // Random number between 50-150
@@ -125,19 +133,27 @@ export class WebsiteCloner {
       
       // Simulate occasional failures
       if (Math.random() > 0.95) { // 5% chance of failure
-        this.progress.stats.failedFiles++;
+        if (this.progress.stats) {
+          this.progress.stats.failedFiles++;
+        }
         this.addLog('error', `Failed to download file`, fileUrl);
       } else {
-        this.progress.stats.downloadedFiles++;
-        this.progress.stats.totalSize += fileSize * 1024; // Convert to bytes
+        if (this.progress.stats) {
+          this.progress.stats.downloadedFiles++;
+          this.progress.stats.totalSize += fileSize * 1024; // Convert to bytes
+        }
         this.addLog('success', `Downloaded file (${fileSize}KB)`, fileUrl);
       }
       
-      this.progress.stats.elapsedTime = (Date.now() - startTime) / 1000;
+      if (this.progress.stats) {
+        this.progress.stats.elapsedTime = (Date.now() - startTime) / 1000;
+      }
     }
     
     // Final update
-    this.progress.stats.elapsedTime = (Date.now() - startTime) / 1000;
+    if (this.progress.stats) {
+      this.progress.stats.elapsedTime = (Date.now() - startTime) / 1000;
+    }
   }
   
   private extractDomain(url: string): string {

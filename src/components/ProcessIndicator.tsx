@@ -26,7 +26,7 @@ const ProcessIndicator: React.FC<ProcessIndicatorProps> = ({ progress, onCancel 
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
   
-  const percent = stats.totalFiles > 0 
+  const percent = stats && stats.totalFiles > 0 
     ? Math.round((stats.downloadedFiles / stats.totalFiles) * 100) 
     : 0;
   
@@ -45,19 +45,19 @@ const ProcessIndicator: React.FC<ProcessIndicatorProps> = ({ progress, onCancel 
               "w-8 h-8 rounded-full flex items-center justify-center",
               status === 'running' ? "bg-primary/10 text-primary animate-pulse" :
               status === 'completed' ? "bg-green-100 text-green-600" :
-              status === 'error' ? "bg-red-100 text-red-600" :
+              status === 'failed' ? "bg-red-100 text-red-600" :
               "bg-secondary text-secondary-foreground"
             )}>
               {status === 'running' && <Download className="h-4 w-4" />}
               {status === 'completed' && <Check className="h-4 w-4" />}
-              {status === 'error' && <X className="h-4 w-4" />}
+              {status === 'failed' && <X className="h-4 w-4" />}
               {status === 'idle' && <Layers className="h-4 w-4" />}
             </div>
             <div>
               <h3 className="font-medium">
                 {status === 'running' && 'Cloning in progress'}
                 {status === 'completed' && 'Cloning completed'}
-                {status === 'error' && 'Cloning failed'}
+                {status === 'failed' && 'Cloning failed'}
                 {status === 'idle' && 'Ready to clone'}
               </h3>
               <p className="text-xs text-muted-foreground truncate max-w-xs sm:max-w-md">
@@ -91,25 +91,25 @@ const ProcessIndicator: React.FC<ProcessIndicatorProps> = ({ progress, onCancel 
           <StatCard 
             icon={<FileArchive className="h-4 w-4" />}
             label="Files"
-            value={`${stats.downloadedFiles}/${stats.totalFiles}`}
+            value={stats ? `${stats.downloadedFiles}/${stats.totalFiles}` : '0/0'}
           />
           
           <StatCard 
             icon={<Database className="h-4 w-4" />}
             label="Data Transferred"
-            value={formatBytes(stats.totalSize)}
+            value={stats ? formatBytes(stats.totalSize) : '0 B'}
           />
           
           <StatCard 
             icon={<Clock className="h-4 w-4" />}
             label="Elapsed Time"
-            value={`${stats.elapsedTime.toFixed(1)}s`}
+            value={stats ? `${stats.elapsedTime.toFixed(1)}s` : '0.0s'}
           />
           
           <StatCard 
             icon={<Wifi className="h-4 w-4" />}
             label="Transfer Rate"
-            value={stats.elapsedTime > 0 
+            value={stats && stats.elapsedTime > 0 
               ? formatBytes(stats.totalSize / stats.elapsedTime) + '/s' 
               : '0 KB/s'
             }

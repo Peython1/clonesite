@@ -31,8 +31,11 @@ const CloneForm: React.FC<CloneFormProps> = ({ onStartClone, isCloning }) => {
     
     onStartClone({
       url,
+      outputDir: outputPath,
       outputPath,
       depth,
+      maxDepth: depth,
+      sameHostOnly: !includeExternal,
       includeExternal,
       parallel
     });
