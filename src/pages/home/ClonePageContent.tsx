@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { WebsiteCloner } from '@/utils/cloner';
@@ -96,6 +95,21 @@ const ClonePageContent: React.FC = () => {
     });
   };
   
+  const toggleMatrixEffect = () => {
+    setMatrixConfig(prev => ({
+      ...prev,
+      enabled: !prev.enabled
+    }));
+    
+    toast({
+      title: matrixConfig.enabled ? "Matrix Effect Disabled" : "Matrix Effect Enabled",
+      description: matrixConfig.enabled 
+        ? "The matrix rain effect has been turned off." 
+        : "The matrix rain effect has been turned on.",
+      variant: "default",
+    });
+  };
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setProgress(cloner.getProgress());
@@ -108,7 +122,10 @@ const ClonePageContent: React.FC = () => {
     <div className="min-h-screen bg-background relative">
       <MatrixController config={matrixConfig} onChange={setMatrixConfig} />
       
-      <BackgroundEffects />
+      <BackgroundEffects 
+        isMatrixEnabled={matrixConfig.enabled}
+        onToggleMatrix={toggleMatrixEffect} 
+      />
       
       <Header />
       
