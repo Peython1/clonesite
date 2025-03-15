@@ -1,87 +1,116 @@
-# Welcome to your Lovable project
+# Bem-vindo ao Meu Projeto 🚀
 
-## Project info
+## 📌 Informações do Projeto
 
-**URL**: https://lovable.dev/projects/34eab173-6c5e-4259-9cb2-a0ca19d5cf0c
+**Status do Projeto**: Em pausa (desenvolvimento inicial)  
+**Versão Atual**: 0.1.0-alpha  
+**URL**: [Em ajustes]  
 
-## How can I edit this code?
+## Como posso editar este código?
 
-There are several ways of editing your application.
+**Usando sua IDE preferida**
 
-**Use Lovable**
+Para trabalhar localmente:
+Clone o repositório:
+-------------------------
+`git clone <Minha_URL_Do_Projeto>
+cd <Sua_Pasta>`
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/34eab173-6c5e-4259-9cb2-a0ca19d5cf0c) and start prompting.
+Instale as dependências:
+-----------------------
+`npm i`
 
-Changes made via Lovable will be committed automatically to this repo.
+Inicie o servidor de desenvolvimento:
+------------------------------------
+`npm run dev`
 
-**Use your preferred IDE**
+Requisito:
+---------
+Node.js e npm instalados (instale via nvm).
+------------------------------------------
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Edição direta no GitHub:
+-----------------------
+Navegue até o arquivo desejado.
+------------------------------
+Clique no ícone de lápis `✏️` ("`Edit`") no canto superior direito.
+------------------------------------------------------------------
+Faça as alterações que você deseja e commit.
+-------------------------------------------
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Usar GitHub Codespaces:
+----------------------
+Acesse a página principal do repositório.
+-----------------------------------------
+Clique no botão verde "`Code`" > aba "`Codespaces`".
+-----------------------------------------------
+Crie um novo codespace.
+--------------------------------------------
+Edite os arquivos que precisar e faça commit das mudanças.
+--------------------------------------------
 
-Follow these steps:
+Tecnologias utilizadas:
+----------------------
+🧰 Meu projeto usa:
+-----------------
+Vite
+----
+TypeScript
+----------
+React
+-----
+shadcn-ui
+---------
+Tailwind CSS
+------------
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Passos simplificados:
+------------------------
+Acesse Vercel e faça login com GitHub.
+------------------------------------
+Importe o rp que foi clonado.
+----------------------
+Deixe todas as configurações padrão (framework preset: Vite).
+------------------------------------------------------------
+Clique em Deploy → Pronto! o app estará online em 2 minutos.
+------------------------------------------------------------
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+⚡ Dica extra:
+--------------
+Se der erro de roteamento:
+-------------------------
+adicione este arquivo `_redirects` na pasta `public` para garantir o roteamento correto:
+----------------------------------------------------------------------------------------
+`/* /index.html 200`
 
-# Step 3: Install the necessary dependencies.
-npm i
+#### Informações Extra:
+----------------------
+#### Esse projeto foi criado para "clonar sites" e extrair o máximo possível de arquivos de qualquer site ignorando totalmente qualquer regra do site.
+### Projeto é recente pode conter ainda erros.
+## Dei uma largada um pouco desse projeto para focar outros.
+# Mas logo mais irei voltar a esse.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## Compilation:
-
-1. Install dependencies via CLI:
-   ```bash
-   lov-add-dependency puppeteer pkg eslint
-   ```
-
-2. Execute the build script:
-   ```bash
-   chmod +x ./scripts/build-exe.sh
-   ./scripts/build-exe.sh
-   ```
-
-Alternative method if lov-add-dependency fails:
-   ```bash
-   npm install --save-dev puppeteer pkg eslint
-   ```
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/34eab173-6c5e-4259-9cb2-a0ca19d5cf0c) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+📜 Direitos Autorais e Licença
+Copyright © [`2025`] [`Clonesite`]. Todos os direitos reservados.
+----------------------------------------------------------------
+Este projeto é protegido por leis de direitos autorais e licenciamento. A menos que explicitamente indicado de outra forma:
+---------------------------------------------------------------------------------------------------------------------------
+Você NÃO pode:
+-------------
+Distribuir, modificar ou usar este código para fins comerciais sem autorização por escrito.
+-------------------------------------------------------------------------------------------
+Remover ou alterar avisos de direitos autorais.
+----------------------------------------------
+Você PODE:
+---------
+Usar o código para fins educacionais ou pessoais (com crédito ao autor original).
+--------------------------------------------------------------------------------
+Licença
+🔒 Licença Privada – Este projeto até o presente momento não é open-source pois falta melhorias a ser feita.
+-------------------------------------------------------------------------------------------------------------
+🛠 Para solicitar permissão de uso [`Se você tiver ideias para implementar, melhorias para fazer`].
+-----------------------------------------------------------------------------------------------
+entre em contato via [EMAIL: Emersonfbardusco@gmail.com `Eu quase nunca olho email`].
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+[ZAP: [55] 11 97405-5440]
+-------------------------
