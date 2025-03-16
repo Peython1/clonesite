@@ -11,6 +11,7 @@
 **Usando sua IDE preferida**
 
 Para trabalhar localmente:
+------------------------
 Clone o repositório:
 -------------------------
 `git clone <Minha_URL_Do_Projeto>
